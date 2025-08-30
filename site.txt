@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тример ProGlide</title>
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+
+        header {
+            background: #4a90e2;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .product {
+            background: #fff;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        ul {
+            text-align: left;
+        }
+
+        .price-box {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fef3c7;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        .new-price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #d32f2f;
+        }
+
+        .timer {
+            font-size: 16px;
+            color: #333;
+            margin: 10px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #4a90e2;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #357abd;
+        }
+
+        /* Модальне вікно */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+        }
+
+        .modal-content {
+            background: #fff;
+            margin: 10% auto;
+            padding: 20px;
+            border-radius: 15px;
+            max-width: 350px;
+        }
+
+        .close {
+            float: right;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        form input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ProGlide — ідеальне гоління без подразнень! 🪒</h1>
+        <p>Більше ніяких порізів, тягнення шкіри чи незручних голінок.</p>
+    </header>
+
+    <section class="product">
+        <h2>Hittech ProGlide</h2>
+        <p>✅ Точне гоління — гострі сталеві леза не тупляться з часом</p>
+        <p>✅ Зручно тримати — антислизька ручка, навіть мокрими руками</p>
+        <p>✅ Працює від батареї — до 90 хвилин без підзарядки</p>
+        <p>✅ Можна в душі — водонепроникний корпус (IPX7)</p>
+        <p>✅ Без болю — спеціальний захист шкіри, підходить навіть для чутливої шкіри</p>
+
+        <h3>🔧 У комплекті:</h3>
+        <ul>
+        <li>Тример</li>
+        <li>USB-кабель для зарядки</li>
+        <li>Міні-щітка для чищення</li>
+        <li>Чохол для зберігання</li>
+        </ul>
+
+        <h3>🎯 Ідеальний для:</h3>
+        <ul>
+        <li>Бороди та вусів</li>
+        <li>Обличчя</li>
+        <li>Шкіри на тілі</li>
+        </ul>
+
+        <p><b>💡 Досить одного заряду на 2 тижні використання!</b></p>
+
+        <div class="price-box">
+        <p class="old-price">Ціна: $29,99</p>
+        <p class="new-price">🔥 Сьогодні зі знижкою 40% — лише $17,99!</p>
+        <p class="timer">⏳ Пропозиція закінчиться через: <span id="countdown"></span></p>
+        <button class="btn" onclick="openForm()">Купити</button>
+        </div>
+    </section>
+
+    <!-- Форма замовлення -->
+    <div id="orderForm" class="modal">
+        <div class="modal-content">
+        <span class="close" onclick="closeForm()">&times;</span>
+        <h2>Оформлення замовлення</h2>
+        <form>
+            <label>Ім’я:</label>
+            <input type="text" name="name" required>
+
+            <label>Email:</label>
+            <input type="email" name="email" required>
+
+            <label>Телефон:</label>
+            <input type="tel" name="phone" placeholder="+380..." required>
+
+            <button type="submit" class="btn">Відправити</button>
+        </form>
+        </div>
+    </div>
+
+    <footer>
+        Магазин техніки
+    </footer>
+
+    <script>
+        // Відкриття/закриття форми
+        function openForm() {
+            document.getElementById("orderForm").style.display = "block";
+        }
+        function closeForm() {
+            document.getElementById("orderForm").style.display = "none";
+        }
+        window.onclick = function(event) {
+                let modal = document.getElementById("orderForm");
+            if (event.target === modal) {
+                closeForm();
+            }
+        };
+
+        // Таймер (скидається при кожному перезапуску вкладки)
+        function startCountdown(minutes) {
+        let countdown = minutes * 60; // у секундах
+        let display = document.getElementById("countdown");
+
+        let timer = setInterval(function() {
+            let min = Math.floor(countdown / 60);
+            let sec = countdown % 60;
+
+            display.textContent = 
+            (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
+
+            if (--countdown < 0) {
+            clearInterval(timer);
+            display.textContent = "00:00 — Акція завершена!";
+            }
+        }, 1000);
+        }
+
+        window.onload = function() {
+        startCountdown(15); // Таймер на 15 хвилин
+        };
+    </script>
+</body>
+</html>
